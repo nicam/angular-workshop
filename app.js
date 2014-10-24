@@ -2,7 +2,6 @@ var app = angular.module('store', ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/products");
-
   $stateProvider
     .state('products', {
       url: "/products",
@@ -49,6 +48,14 @@ app.controller('StoreController', function ($scope, $rootScope, cartService) {
 
 });
 
+app.controller('CheckoutController', function ($scope, cartService) {
+  $scope.getItems = cartService.getItems();
+
+  $scope.removeFromCart = function (index) {
+    cartService.removeItem(index);
+  };
+});
+
 app.filter('total', function () {
   return function (input) {
     var total = 0;
@@ -59,11 +66,20 @@ app.filter('total', function () {
   }
 });
 
-app.controller('CheckoutController', function ($scope, cartService) {
-  $scope.getItems = cartService.getItems();
-
-  $scope.removeFromCart = function (index) {
-    cartService.removeItem(index);
+app.directive('addToCart', function(cartService) {
+  return {
+    restrict: 'E',
+    scope: {
+      product: '='
+    },
+    controller: function($scope, $element) {
+        $scope.addToCart = function () {
+          $element.addClass("btn-success");
+          cartService.addItem($scope.product);
+        }
+    },
+    template: '<button class="btn" ng-click="addToCart()">Add to Cart</button>',
+    replace: true
   };
 });
 
