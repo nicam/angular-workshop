@@ -1,11 +1,11 @@
 <h1>Cart</h1>
 <ul class="list-group"> 
-  <li class="list-group-item" ng-repeat="product in getItems track by $index">
+  <li class="list-group-item" ng-repeat="product in products track by $index">
     <span>{{product.name}}</span>
     <span class="pull-right">{{product.price | currency}}</span>
     <button class="btn" ng-click="removeFromCart($index)">Remove from Cart</button>
   </li>
 </ul>
 
-<h2 ng-hide="getItems.length > 0">No Products in the Cart yet.</div>
-<h2 ng-show="getItems.length > 0">Total cost ist {{getItems | total | currency}}</h2>
+<h2 ng-hide="products.length > 0">No Products in the Cart yet.</div>
+<h2 ng-show="products.length > 0">Total cost ist {{products | total | currency}}</h2>
