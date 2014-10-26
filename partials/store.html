@@ -1,6 +1,6 @@
 <h1>Product Store</h1>
 <ul class="list-group"> 
-  <li class="list-group-item" ng-repeat="product in products">
+  <li class="list-group-item" ng-repeat="product in products | filter:{ canPurchase: true}">
     <h2> 
       {{product.name}}
       <em class="pull-right">{{product.price | currency}}</em>

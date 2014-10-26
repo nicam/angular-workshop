@@ -38,6 +38,13 @@ app.controller('StoreController', function ($scope, $rootScope, cartService) {
       price: 5.95, 
       image: "trapezohedron.png",
       description: "Look, just because I don't be givin' no man a foot massage don't make it right for Marsellus to throw Antwone into a glass motherfuckin' house, fuckin' up the way the nigger talks. Motherfucker do that shit to me, he better paralyze my ass, 'cause I'll kill the motherfucker, know what I'm sayin'?", 
+      canPurchase: true, 
+    },
+    { 
+      name: "I should not be shown", 
+      price: 10000, 
+      image: "",
+      description: "NOPE NOPE NOPE NOPE NOPE", 
       canPurchase: false, 
     }
   ];
@@ -49,7 +56,7 @@ app.controller('StoreController', function ($scope, $rootScope, cartService) {
 });
 
 app.controller('CheckoutController', function ($scope, cartService) {
-  $scope.getItems = cartService.getItems();
+  $scope.products = cartService.getItems();
 
   $scope.removeFromCart = function (index) {
     cartService.removeItem(index);
