@@ -1,6 +1,6 @@
 var app = angular.module('store', ['ui.router']);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/products");
   $stateProvider
     .state('products', {
@@ -13,18 +13,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "partials/checkout.html",
       controller: 'CheckoutController'
     });
-});
+}]);
 
-app.controller('NavigationController', function ($scope, $rootScope, cartService) {
+app.controller('NavigationController', ['$scope', '$rootScope', 'cartService', function ($scope, $rootScope, cartService) {
   $rootScope.$on('cartUpdate', updateCount);
   updateCount();
 
   function updateCount () {
     $scope.count = cartService.getSize();
   }
-});
+}]);
 
-app.controller('StoreController', function ($scope, cartService) {
+app.controller('StoreController', ['$scope', 'cartService', function ($scope, cartService) {
   $scope.products = [
     {
       name: "Dodecahedron",
@@ -53,15 +53,15 @@ app.controller('StoreController', function ($scope, cartService) {
     cartService.addItem(product);
   };
 
-});
+}]);
 
-app.controller('CheckoutController', function ($scope, cartService) {
+app.controller('CheckoutController', ['$scope', 'cartService', function ($scope, cartService) {
   $scope.products = cartService.getItems();
 
   $scope.removeFromCart = function (index) {
     cartService.removeItem(index);
   };
-});
+}]);
 
 app.filter('total', function () {
   return function (input) {
@@ -73,24 +73,24 @@ app.filter('total', function () {
   }
 });
 
-app.directive('addToCart', function(cartService) {
+app.directive('addToCart', ['cartService', function(cartService) {
   return {
     restrict: 'E',
     scope: {
       product: '='
     },
-    controller: function($scope, $element) {
+    controller: ['$scope', '$element', function($scope, $element) {
         $scope.addToCart = function () {
           $element.addClass("btn-success");
           cartService.addItem($scope.product);
-        }
-    },
-    template: '<button class="btn" ng-click="addToCart()">Add to Cart</button>',
+        };
+    }],
+    template: '<button class="btn" ng-click="addToCart()">Add {{ product.name }} to Cart</button>',
     replace: true
   };
-});
+}]);
 
-app.service('cartService', function($rootScope) {
+app.service('cartService', ['$rootScope', function($rootScope) {
   var cart = [];
   this.addItem = function(item) {
     cart.push(item);
@@ -109,4 +109,4 @@ app.service('cartService', function($rootScope) {
   this.getSize = function () {
     return cart.length;
   };
-});
+}]);
