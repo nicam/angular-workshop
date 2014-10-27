@@ -24,11 +24,13 @@ describe('Directive: addToCart', function() {
         // The injector unwraps the underscores (_) from around the parameter names when matching
         $compile = _$compile_;
         $rootScope = _$rootScope_;
+        $rootScope.product = {name: 'TestName'};
     }));
 
     it('Replaces the element with the appropriate content', function() {
         var element = $compile('<add-to-cart product="product"></add-to-cart>')($rootScope);
+        $rootScope.$digest();
 
-        expect(element.html()).toContain("Add to Cart");
+        expect(element.html()).toContain("Add TestName to Cart");
     });
 });
